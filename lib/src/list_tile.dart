@@ -143,25 +143,6 @@ class CupertinoListTile extends StatelessWidget {
     return dense ?? tileTheme?.dense ?? false;
   }
 
-  TextStyle _titleTextStyle(
-      BuildContext context, CupertinoThemeData theme, ListTileTheme tileTheme) {
-    TextStyle style = theme.textTheme.textStyle;
-    final Color color = _textColor(context, theme, tileTheme, style.color);
-    return _isDenseLayout(tileTheme)
-        ? style.copyWith(fontSize: 13.0, color: color)
-        : style.copyWith(color: color);
-  }
-
-  TextStyle _subtitleTextStyle(
-      BuildContext context, CupertinoThemeData theme, ListTileTheme tileTheme) {
-    final TextStyle style = theme.textTheme.tabLabelTextStyle;
-    final Color color =
-        _textColor(context, theme, tileTheme, theme.textTheme.textStyle.color);
-    return _isDenseLayout(tileTheme)
-        ? style.copyWith(color: color, fontSize: 12.0)
-        : style.copyWith(color: color);
-  }
-
   @override
   Widget build(BuildContext context) {
     final CupertinoThemeData theme = CupertinoTheme.of(context);
@@ -180,21 +161,9 @@ class CupertinoListTile extends StatelessWidget {
       );
     }
 
-    final TextStyle titleStyle = _titleTextStyle(context, theme, tileTheme);
-    final Widget titleText = DefaultTextStyle(
-      style: titleStyle,
-      child: title ?? const SizedBox(),
-    );
+    final Widget titleText = title ?? const SizedBox();
 
-    Widget subtitleText;
-    TextStyle subtitleStyle;
-    if (subtitle != null) {
-      subtitleStyle = _subtitleTextStyle(context, theme, tileTheme);
-      subtitleText = DefaultTextStyle(
-        style: subtitleStyle,
-        child: subtitle,
-      );
-    }
+    Widget subtitleText = subtitle;
 
     Widget trailingIcon;
     if (trailing != null) {
@@ -203,9 +172,13 @@ class CupertinoListTile extends StatelessWidget {
         child: trailing,
       );
     } else {
-      trailingIcon = Icon(CupertinoIcons.right_chevron,
-          color: CupertinoDynamicColor.resolve(
-              CupertinoColors.separator, context));
+      trailingIcon = Icon(
+        CupertinoIcons.right_chevron,
+        color: CupertinoDynamicColor.resolve(
+          CupertinoColors.separator,
+          context,
+        ),
+      );
     }
 
     const EdgeInsets _defaultContentPadding =
@@ -233,7 +206,9 @@ class CupertinoListTile extends StatelessWidget {
           border: Border(
             bottom: BorderSide(
               color: CupertinoDynamicColor.resolve(
-                  CupertinoColors.separator, context),
+                CupertinoColors.separator,
+                context,
+              ),
             ),
           ),
         ),
@@ -267,10 +242,8 @@ class CupertinoListTile extends StatelessWidget {
             isDense: _isDenseLayout(tileTheme),
             isThreeLine: isThreeLine,
             textDirection: textDirection,
-            titleBaselineType:
-                titleStyle.textBaseline ?? TextBaseline.alphabetic,
-            subtitleBaselineType:
-                subtitleStyle?.textBaseline ?? TextBaseline.alphabetic,
+            titleBaselineType: TextBaseline.alphabetic,
+            subtitleBaselineType: TextBaseline.alphabetic,
             padding: resolvedContentPadding,
           ),
         ),
