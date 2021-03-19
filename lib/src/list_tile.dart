@@ -45,6 +45,8 @@ class CupertinoListTile extends StatelessWidget {
     this.focusColor,
     this.hoverColor,
     this.focusNode,
+    this.dividerColor,
+    this.dividerHeight,
     this.autofocus = false,
   })  : assert(isThreeLine != null),
         assert(enabled != null),
@@ -107,11 +109,17 @@ class CupertinoListTile extends StatelessWidget {
   /// See [ListTile.autofocus].
   final bool autofocus;
 
+  final Color dividerColor;
+
+  final double dividerHeight;
+
   Color _iconColor(
       BuildContext context, CupertinoThemeData theme, ListTileTheme tileTheme) {
     if (!enabled)
       return CupertinoDynamicColor.resolve(
-          CupertinoColors.placeholderText, context);
+        CupertinoColors.placeholderText,
+        context,
+      );
 
     if (selected && tileTheme?.selectedColor != null)
       return tileTheme.selectedColor;
@@ -121,22 +129,6 @@ class CupertinoListTile extends StatelessWidget {
     if (selected) return theme.primaryColor;
 
     return null;
-  }
-
-  Color _textColor(BuildContext context, CupertinoThemeData theme,
-      ListTileTheme tileTheme, Color defaultColor) {
-    if (!enabled)
-      return CupertinoDynamicColor.resolve(
-          CupertinoColors.placeholderText, context);
-
-    if (selected && tileTheme?.selectedColor != null)
-      return tileTheme.selectedColor;
-
-    if (!selected && tileTheme?.textColor != null) return tileTheme.textColor;
-
-    if (selected) return theme.primaryColor;
-
-    return defaultColor;
   }
 
   bool _isDenseLayout(ListTileTheme tileTheme) {
@@ -201,14 +193,15 @@ class CupertinoListTile extends StatelessWidget {
     Widget separator;
     if (border == null) {
       separator = Container(
-        height: 1,
+        height: dividerHeight ?? 1,
         decoration: BoxDecoration(
           border: Border(
             bottom: BorderSide(
-              color: CupertinoDynamicColor.resolve(
-                CupertinoColors.separator,
-                context,
-              ),
+              color: dividerColor ??
+                  CupertinoDynamicColor.resolve(
+                    CupertinoColors.separator,
+                    context,
+                  ),
             ),
           ),
         ),
