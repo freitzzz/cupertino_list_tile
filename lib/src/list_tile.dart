@@ -48,6 +48,7 @@ class CupertinoListTile extends StatelessWidget {
     this.dividerColor,
     this.dividerThickness,
     this.autofocus = false,
+    this.expandSubtitle = false,
   })  : assert(isThreeLine != null),
         assert(enabled != null),
         assert(selected != null),
@@ -108,7 +109,9 @@ class CupertinoListTile extends StatelessWidget {
 
   /// See [ListTile.autofocus].
   final bool autofocus;
-
+  
+  final bool expandSubtitle;
+  
   final Color dividerColor;
 
   final double dividerThickness;
@@ -240,6 +243,7 @@ class CupertinoListTile extends StatelessWidget {
             titleBaselineType: TextBaseline.alphabetic,
             subtitleBaselineType: TextBaseline.alphabetic,
             padding: resolvedContentPadding,
+            expandSubtitle: expandSubtitle,
           ),
         ),
       ),
@@ -270,6 +274,7 @@ class _ListTile extends RenderObjectWidget {
     @required this.titleBaselineType,
     this.subtitleBaselineType,
     this.padding,
+    this.expandSubtitle,
   })  : assert(isThreeLine != null),
         assert(isDense != null),
         assert(textDirection != null),
@@ -288,6 +293,7 @@ class _ListTile extends RenderObjectWidget {
   final TextBaseline titleBaselineType;
   final TextBaseline subtitleBaselineType;
   final EdgeInsets padding;
+  final bool expandSubtitle;
 
   @override
   _ListTileElement createElement() => _ListTileElement(this);
@@ -301,6 +307,7 @@ class _ListTile extends RenderObjectWidget {
       textDirection: textDirection,
       titleBaselineType: titleBaselineType,
       subtitleBaselineType: subtitleBaselineType,
+      expandSubtitle: expandSubtitle,
     );
   }
 
@@ -441,6 +448,7 @@ class _RenderListTile extends RenderBox {
     @required bool isThreeLine,
     @required TextDirection textDirection,
     @required TextBaseline titleBaselineType,
+    final this.expandSubtitle,
     TextBaseline subtitleBaselineType,
   })  : assert(padding != null),
         assert(isDense != null),
@@ -453,6 +461,8 @@ class _RenderListTile extends RenderBox {
         _textDirection = textDirection,
         _titleBaselineType = titleBaselineType,
         _subtitleBaselineType = subtitleBaselineType;
+
+  final bool expandSubtitle;
 
   static const double _minLeadingWidth = 40.0;
   // The horizontal gap between the titles and the leading/trailing widgets
@@ -729,8 +739,14 @@ class _RenderListTile extends RenderBox {
     final BoxConstraints textConstraints = looseConstraints.tighten(
       width: tileWidth - titleStart - adjustedTrailingWidth,
     );
+
+    final BoxConstraints subtitleConstraints = looseConstraints.tighten(
+      width:
+          tileWidth - titleStart - (expandSubtitle ? 0 : adjustedTrailingWidth),
+    );
+
     final Size titleSize = _layoutBox(title, textConstraints);
-    final Size subtitleSize = _layoutBox(subtitle, textConstraints);
+    final Size subtitleSize = _layoutBox(subtitle, subtitleConstraints);
 
     final BoxConstraints separatorConstraints = constraints.enforce(
       BoxConstraints(
