@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart' show FlutterLogo;
+import 'package:flutter/material.dart' show FlutterLogo, Icons;
 import 'package:provider/provider.dart';
 import 'package:cupertino_list_tile/cupertino_list_tile.dart';
 
@@ -86,8 +86,15 @@ class ExampleApp extends StatelessWidget {
                     return CupertinoListTile(
                       leading: FlutterLogo(size: 72.0),
                       title: Text('Three-line ListTile'),
-                      subtitle: Text('Lorem ipsum\ndolor sit amet'),
+                      subtitle: Row(
+                        children: [
+                          Text('Lorem ipsum\ndolor sit amet'),
+                          Icon(Icons.ac_unit)
+                        ],
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      ),
                       isThreeLine: true,
+                      subtitleMargin: 40.0,
                     );
                   },
                 ),
