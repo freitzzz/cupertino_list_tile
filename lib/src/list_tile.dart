@@ -829,7 +829,6 @@ class _RenderListTile extends RenderBox {
       trailingY = (tileHeight - trailingSize.height) / 2.0;
     }
 
-    print(trailingY);
     final separatorY = tileHeight + _padding.bottom;
 
     switch (textDirection) {
