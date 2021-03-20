@@ -741,7 +741,7 @@ class _RenderListTile extends RenderBox {
     );
 
     final BoxConstraints subtitleConstraints = looseConstraints.tighten(
-      width: tileWidth - titleStart - subtitleMargin - adjustedTrailingWidth,
+      width: tileWidth - titleStart - adjustedTrailingWidth + subtitleMargin,
     );
 
     final Size titleSize = _layoutBox(title, textConstraints);
